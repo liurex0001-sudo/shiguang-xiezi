@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拾光码字 - 你的创作伙伴</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #2d3748;
+        }
+
+        /* 顶部导航 - 樱花粉 */
+        .header {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: #fff;
+            color: #fcb69f;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(252, 182, 159, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.3);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.5);
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 2rem;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* 侧边栏 - 薄荷绿 */
+        .sidebar {
+            background: linear-gradient(180deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 20px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-title {
+            font-size: 0.85rem;
+            color: #4a5568;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tool-list {
+            list-style: none;
+        }
+
+        .tool-item {
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-bottom: 0.6rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            background: rgba(255,255,255,0.5);
+            color: #4a5568;
+        }
+
+        .tool-item:hover {
+            background: rgba(255,255,255,0.8);
+            transform: translateX(5px);
+        }
+
+        .tool-item.active {
+            background: #fff;
+            color: #e53e3e;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .tool-icon {
+            font-size: 1.3rem;
+        }
+
+        /* 创作模板 */
+        .templates {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .template-title {
+            font-size: 0.85rem;
+            color: #4a5568;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .template-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .template-tag {
+            padding: 0.4rem 0.9rem;
+            background: rgba(255,255,255,0.6);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #4a5568;
+        }
+
+        .template-tag:hover {
+            background: #fff;
+            transform: scale(1.05);
+        }
+
+        /* 主内容区 */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* 写作面板 - 白色卡片 */
+        .writing-panel {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .word-count {
+            font-size: 0.9rem;
+            color: #718096;
+            background: #f7fafc;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+        }
+
+        .writing-area {
+            width: 100%;
+            min-height: 280px;
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 1.2rem;
+            color: #2d3748;
+            font-size: 1.05rem;
+            line-height: 1.9;
+            resize: vertical;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .writing-area:focus {
+            outline: none;
+            border-color: #fcb69f;
+            background: #fff;
+        }
+
+        .writing-area::placeholder {
+            color: #a0aec0;
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1.2rem;
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 0.9rem 2.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn-generate:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-generate:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-clear {
+            background: #fff;
+            color: #718096;
+            border: 2px solid #e2e8f0;
+            padding: 0.9rem 1.5rem;
+        }
+
+        .btn-clear:hover {
+            border-color: #cbd5e0;
+            color: #4a5568;
+        }
+
+        /* 输出面板 */
+        .output-panel {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            flex: 1;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .output-content {
+            min-height: 200px;
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 1.5rem;
+            line-height: 1.9;
+            white-space: pre-wrap;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+        }
+
+        .output-placeholder {
+            color: #a0aec0;
+            font-style: italic;
+        }
+
+        /* 加载动画 */
+        .loading {
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+            color: #667eea;
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                position: static;
+            }
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* 装饰性元素 */
+        .flower-decoration {
+            position: fixed;
+            font-size: 2rem;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .flower-1 { top: 10%; left: 5%; }
+        .flower-2 { top: 60%; right: 5%; }
+        .flower-3 { bottom: 10%; left: 10%; }
+    </style>
+</head>
+<body>
+    <!-- 装饰花朵 -->
+    <div class="flower-decoration flower-1">🌸</div>
+    <div class="flower-decoration flower-2">🌿</div>
+    <div class="flower-decoration flower-3">🌺</div>
+
+    <header class="header">
+        <div class="logo">
+            <span class="logo-icon">🌸</span>
+            <span>拾光码字</span>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-secondary">📚 我的作品</button>
+            <button class="btn btn-secondary">🎨 素材库</button>
+            <button class="btn btn-primary">⚙️ 设置</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-title">
+                <span>✨</span>
+                <span>创作工具</span>
+            </div>
+            <ul class="tool-list">
+                <li class="tool-item active" data-tool="continue">
+                    <span class="tool-icon">📝</span>
+                    <span>智能续写</span>
+                </li>
+                <li class="tool-item" data-tool="expand">
+                    <span class="tool-icon">✨</span>
+                    <span>精彩扩写</span>
+                </li>
+                <li class="tool-item" data-tool="polish">
+                    <span class="tool-icon">💎</span>
+                    <span>文笔润色</span>
+                </li>
+                <li class="tool-item" data-tool="brainstorm">
+                    <span class="tool-icon">💡</span>
+                    <span>灵感风暴</span>
+                </li>
+            </ul>
+
+            <div class="templates">
+                <div class="template-title">📖 创作题材</div>
+                <div class="template-tags">
+                    <span class="template-tag" data-type="xianxia">仙侠</span>
+                    <span class="template-tag" data-type="city">都市</span>
+                    <span class="template-tag" data-type="fantasy">玄幻</span>
+                    <span class="template-tag" data-type="history">历史</span>
+                    <span class="template-tag" data-type="scifi">科幻</span>
+                    <span class="template-tag" data-type="mystery">悬疑</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="writing-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">
+                        <span>📝</span>
+                        <span id="currentTool">智能续写</span>
+                    </h2>
+                    <span class="word-count" id="wordCount">0 字</span>
+                </div>
+                <textarea 
+                    class="writing-area" 
+                    id="writingArea" 
+                    placeholder="在这里开始你的创作之旅...&#10;&#10;例如：&#10;清晨的第一缕阳光洒进书房，林墨放下手中的笔，望向窗外。三年前的那场变故，仿佛就发生在昨天..."
+                ></textarea>
+                <div class="action-bar">
+                    <button class="btn btn-clear" id="clearBtn">🗑️ 清空</button>
+                    <button class="btn btn-generate" id="generateBtn">
+                        ✨ 开始创作
+                    </button>
+                </div>
+            </div>
+
+            <div class="output-panel">
+                <div class="output-header">
+                    <h2 class="panel-title">
+                        <span>🎯</span>
+                        <span>AI 创作结果</span>
+                    </h2>
+                    <div class="loading" id="loading">
+                        <div class="spinner"></div>
+                        <span>创作中...</span>
+                    </div>
+                </div>
+                <div class="output-content" id="outputContent">
+                    <span class="output-placeholder">点击「开始创作」按钮，让 AI 为你的故事增添色彩...</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 工具配置
+        const tools = {
+            continue: {
+                name: '智能续写',
+                icon: '📝',
+                description: '为你的故事续写精彩篇章'
+            },
+            expand: {
+                name: '精彩扩写',
+                icon: '✨',
+                description: '丰富细节，让文字更生动'
+            },
+            polish: {
+                name: '文笔润色',
+                icon: '💎',
+                description: '提升文笔，让表达更优美'
+            },
+            brainstorm: {
+                name: '灵感风暴',
+                icon: '💡',
+                description: '激发创意，探索无限可能'
+            }
+        };
+
+        // 题材提示词
+        const templates = {
+            xianxia: '修仙问道，追寻长生，历经磨难终成大能',
+            city: '都市繁华，主角身怀绝技，在现代演绎传奇',
+            fantasy: '玄幻世界，奇遇连连，修炼无上神功',
+            history: '穿越古今，凭借先知改变历史进程',
+            scifi: '未来世界，科技与人性的碰撞',
+            mystery: '悬疑重重，抽丝剥茧探寻真相'
+        };
+
+        let currentTool = 'continue';
+        let selectedTemplate = '';
+
+        // DOM 元素
+        const writingArea = document.getElementById('writingArea');
+        const wordCount = document.getElementById('wordCount');
+        const outputContent = document.getElementById('outputContent');
+        const generateBtn = document.getElementById('generateBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const loading = document.getElementById('loading');
+        const currentToolEl = document.getElementById('currentTool');
+
+        // 字数统计
+        writingArea.addEventListener('input', () => {
+            const text = writingArea.value;
+            const count = text.length;
+            wordCount.textContent = `${count} 字`;
+        });
+
+        // 工具切换
+        document.querySelectorAll('.tool-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.tool-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                currentTool = item.dataset.tool;
+                currentToolEl.textContent = tools[currentTool].name;
+            });
+        });
+
+        // 题材选择
+        document.querySelectorAll('.template-tag').forEach(tag => {
+            tag.addEventListener('click', () => {
+                selectedTemplate = templates[tag.dataset.type];
+                writingArea.placeholder = `【${tag.textContent}题材】\n\n${selectedTemplate}\n\n请开始你的创作...`;
+                
+                // 视觉反馈
+                document.querySelectorAll('.template-tag').forEach(t => t.style.background = 'rgba(255,255,255,0.6)');
+                tag.style.background = '#fff';
+            });
+        });
+
+        // 清空按钮
+        clearBtn.addEventListener('click', () => {
+            writingArea.value = '';
+            outputContent.innerHTML = '<span class="output-placeholder">点击「开始创作」按钮，让 AI 为你的故事增添色彩...</span>';
+            wordCount.textContent = '0 字';
+        });
+
+        // 生成按钮
+        generateBtn.addEventListener('click', async () => {
+            const content = writingArea.value.trim();
+            if (!content) {
+                outputContent.innerHTML = '<span style="color:#e53e3e;">请先输入一些内容再开始创作哦～</span>';
+                return;
+            }
+
+            // 显示加载
+            loading.classList.add('active');
+            outputContent.innerHTML = '';
+            generateBtn.disabled = true;
+            generateBtn.textContent = '创作中...';
+
+            try {
+                const result = await callAI(content, currentTool, selectedTemplate);
+                outputContent.textContent = result;
+            } catch (error) {
+                outputContent.innerHTML = `<span style="color:#e53e3e;">创作失败: ${error.message}</span>`;
+            } finally {
+                loading.classList.remove('active');
+                generateBtn.disabled = false;
+                generateBtn.textContent = '✨ 开始创作';
+            }
+        });
+
+        // AI 调用
+        async function callAI(content, tool, template) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    const results = {
+                        continue: `【续写结果】\n\n${content}\n\n就在这时，窗外突然传来一阵轻微的响动。林墨警觉地抬起头，目光如电般扫向声音的来源。月光下，一道黑影一闪而过...\n\n他迅速起身追了出去，却发现院子里空无一人，只有地上留下了一片陌生的花瓣。那花瓣散发着淡淡的幽香，似乎在诉说着一个不为人知的秘密。`,
+                        
+                        expand: `【扩写结果】\n\n${content.split('').join('')}——林墨的思绪随着窗外的风景飘向远方。\n\n他想起三年前的那个雨夜，那时的他还只是一个懵懂少年。命运的齿轮在那一天悄然转动，将他卷入了一场惊天动地的变革之中。\n\n如今回首，那些曾经的迷茫与困惑，都已化作成长的养分。他知道，前方的路还很长，但只要心中有光，就永远不会迷失方向。`,
+                        
+                        polish: `【润色结果】\n\n晨曦微露，第一缕暖阳穿透窗棂，温柔地洒落在书案之上。林墨搁下手中狼毫，目光悠远地望向天际。\n\n那段尘封三年的往事，宛如昨日般历历在目。那些悲喜交加的岁月，已深深镌刻在他的记忆之中，成为生命中不可磨灭的印记。`,
+                        
+                        brainstorm: `【灵感风暴】\n\n基于你的内容，以下是几个可能的剧情发展方向：\n\n1. 🌟 神秘访客 - 一位神秘人物悄然出现，带来关于过去的线索\n2. ⚔️ 冲突升级 - 敌对势力找上门来，主角被迫卷入新的纷争\n3. 💫 奇遇降临 - 意外发现一本古籍，开启修炼之路\n4. 🎭 身份揭秘 - 主角的真实身世逐渐浮出水面\n5. 🌈 新的开始 - 决定离开故土，踏上寻找真相的旅程\n\n你更倾向于哪个方向呢？`
+                    };
+                    
+                    resolve(results[tool] || '未知工具');
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+</html>
